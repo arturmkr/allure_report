@@ -46,3 +46,21 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
+
+      - name: Generate directory listing HTML
+        if: always()
+        run: |
+          echo "<html><body><h1>Directory Listing</h1><ul>" > gh-pages/aba/list.html
+          for dir in $(find gh-pages/aba -mindepth 1 -maxdepth 1 -type d | grep -v "last-history"); do
+            dirname=$(basename $dir)
+            echo "<li><a href=\"$dirname\">$dirname</a></li>" >> gh-pages/aba/list.html
+          done
+          echo "</ul></body></html>" >> gh-pages/aba/list.html
+
+      - name: Publish updated directory listing
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: gh-pages
