@@ -72,3 +72,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: gh-pages
+
+      - name: Add link to job summary
+        run: echo "[Results ${{ github.run_number }} Report](https://arturmkr.github.io/allure_report/aba/${{ github.run_number }}/)" >> $GITHUB_STEP_SUMMARY
