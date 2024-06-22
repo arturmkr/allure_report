@@ -56,4 +56,4 @@ jobs:
           context: 'Test report'
           state: 'success'
           sha: ${{ env.GITHUB_SHA }}
-          target_url: https://arturmkr.github.io/allure_report/aba/${{ github.run_number }}
+          target_url: simple-elf.github.io/github-allure-history/aba/${{ github.run_number }}
