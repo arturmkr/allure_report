@@ -52,10 +52,6 @@ jobs:
         id: get-sha
         run: echo "GITHUB_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
 
-      - name: debug
-        if: always()
-        run: echo ${{ simple-elf.github.io/github-allure-history/aba/${{ github.run_number }} }}
-
       - name: Post the link to the report
         if: always()
         uses: Sibz/github-status-action@v1
