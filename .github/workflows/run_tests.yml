@@ -44,6 +44,7 @@ jobs:
           publish_dir: allure-history
 
       - name: Set environment variable for SHA
+        if: always()
         id: get-sha
         run: echo "GITHUB_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
 
