@@ -46,18 +46,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
-
-      - name: Set environment variable for SHA
-        if: always()
-        id: get-sha
-        run: echo "GITHUB_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
-
-      - name: Post the link to the report
-        if: always()
-        uses: Sibz/github-status-action@v1
-        with:
-          authToken: ${{ secrets.GITHUB_TOKEN }}
-          context: 'Test report'
-          state: 'success'
-          sha: ${{ env.GITHUB_SHA }}
-          target_url: simple-elf.github.io/github-allure-history/aba/${{ github.run_number }}
