@@ -1,6 +1,8 @@
 name: Run tests and publish report
 on:
   workflow_dispatch:
+    branches:
+      - main
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -41,12 +43,15 @@ jobs:
           publish_branch: gh-pages
           publish_dir: allure-history
 
+      - name: Set environment variable for SHA
+        run: echo "GITHUB_SHA=${{ github.event.pull_request.head.sha || github.sha }}" >> $GITHUB_ENV
+
       - name: Post the link to the report
         if: always()
         uses: Sibz/github-status-action@v1
         with:
-            authToken: ${{secrets.GITHUB_TOKEN}}
-            context: 'Test report'
-            state: 'success'
-            sha: ${{ github.event.pull_request.head.sha }}
-            target_url: https://arturmkr.github.io/allure_report/aba/${{ github.run_number }}
+          authToken: ${{ secrets.GITHUB_TOKEN }}
+          context: 'Test report'
+          state: 'success'
+          sha: ${{ env.GITHUB_SHA }}
+          target_url: https://arturmkr.github.io/allure_report/aba/${{ github.run_number }}
