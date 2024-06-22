@@ -44,7 +44,8 @@ jobs:
           publish_dir: allure-history
 
       - name: Set environment variable for SHA
-        run: echo "GITHUB_SHA=${{ github.event.pull_request.head.sha || github.sha }}" >> $GITHUB_ENV
+        id: get-sha
+        run: echo "GITHUB_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - name: Post the link to the report
         if: always()
