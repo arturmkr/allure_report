@@ -1,0 +1,2 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"failed","Sun Jun 23 09:22:53 GMT 2024","Sun Jun 23 09:22:55 GMT 2024","2358","","com.example.allure_report.MyDemoTest","","com.example.allure_report.MyDemoTest","sendDataTest","sendDataTest()",""
