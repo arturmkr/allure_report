@@ -47,32 +47,6 @@ jobs:
           publish_branch: gh-pages
           publish_dir: allure-history
 
-      - name: Load test report history
-        uses: actions/checkout@v3
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
-
-      - name: Generate directory listing HTML
-        if: always()
-        run: |
-          echo "<html><body><h1>Directory Listing</h1><ul>" > gh-pages/aba/list.html
-          find gh-pages/aba -mindepth 1 -maxdepth 1 -type d | grep -v "last-history" | sort -r | while read dir; do
-            dirname=$(basename $dir)
-            echo "<li><a href=\"$dirname\">$dirname</a></li>" >> gh-pages/aba/list.html
-          done
-          echo "</ul></body></html>" >> gh-pages/aba/list.html
-
-      - name: Publish updated directory listing
-        uses: peaceiris/actions-gh-pages@v3
-        if: always()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: gh-pages
-
       - name: Add link to job summary
         if: always()
-        run: echo "[Results ${{ github.run_number }} Report](https://arturmkr.github.io/allure_report/aba/${{ github.run_number }}/)" >> $GITHUB_STEP_SUMMARY
+        run: echo "[Report](https://arturmkr.github.io/allure_report/aba/${{ github.run_number }}/)" >> $GITHUB_STEP_SUMMARY
