@@ -1,4 +1,4 @@
-name: Run tests and publish report
+name: Run tests XYZ
 
 on:
   push:
@@ -40,7 +40,7 @@ jobs:
           gh_pages: gh-pages
           allure_history: allure-history
           allure_results: build/allure-results
-          subfolder: ${{ env.ENV_KIND }}
+          subfolder: xyz
 
       - name: Publish test report
         uses: peaceiris/actions-gh-pages@v3
