@@ -52,4 +52,4 @@ jobs:
 
       - name: Add link to job summary
         if: always()
-        run: echo "[Report](https://arturmkr.github.io/allure_report/${{ env.ENV_KIND }}/${{ github.run_number }}/)" >> $GITHUB_STEP_SUMMARY
+        run: echo "[Report](https://arturmkr.github.io/allure_report/xyz/${{ github.run_number }}/)" >> $GITHUB_STEP_SUMMARY
