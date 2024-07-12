@@ -1,14 +1,17 @@
 name: Run tests and publish report
+
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-    branches:
-      - main
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      ENV_KIND: aba
+
     steps:
       - uses: actions/checkout@v3
 
@@ -37,7 +40,7 @@ jobs:
           gh_pages: gh-pages
           allure_history: allure-history
           allure_results: build/allure-results
-          subfolder: aba
+          subfolder: ${{ env.ENV_KIND }}
 
       - name: Publish test report
         uses: peaceiris/actions-gh-pages@v3
@@ -49,4 +52,4 @@ jobs:
 
       - name: Add link to job summary
         if: always()
-        run: echo "[Report](https://arturmkr.github.io/allure_report/aba/${{ github.run_number }}/)" >> $GITHUB_STEP_SUMMARY
+        run: echo "[Report](https://arturmkr.github.io/allure_report/${{ env.ENV_KIND }}/${{ github.run_number }}/)" >> $GITHUB_STEP_SUMMARY
