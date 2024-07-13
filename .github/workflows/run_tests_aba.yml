@@ -1,4 +1,4 @@
-name: Run tests ABA
+name: Run tests and trigger publish
 
 on:
   push:
@@ -25,31 +25,19 @@ jobs:
       - name: Run tests
         run: ./gradlew clean test
 
-      - name: Load test report history
-        uses: actions/checkout@v3
-        if: always()
-        continue-on-error: true
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
         with:
-          ref: gh-pages
-          path: gh-pages
+          name: results-${{ env.ENV_KIND }}-${{ github.run_number }}
+          path: build/allure-results
 
-      - name: Build test report
-        uses: simple-elf/allure-report-action@v1.7
-        if: always()
-        with:
-          gh_pages: gh-pages
-          allure_history: allure-history
-          allure_results: build/allure-results
-          subfolder: ${{ env.ENV_KIND }}
-
-      - name: Publish test report
-        uses: peaceiris/actions-gh-pages@v3
-        if: always()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history
+      - name: Trigger publish workflow
+        run: |
+          curl -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/publish.yml/dispatches \
+          -d '{"ref":"main","inputs":{"env_kind":"${{ env.ENV_KIND }}","run_number":"${{ github.run_number }}"}}'
 
       - name: Add link to job summary
-        if: always()
         run: echo "[Report](https://arturmkr.github.io/allure_report/${{ env.ENV_KIND }}/${{ github.run_number }}/)" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,46 @@
+name: Publish test report
+
+on:
+  workflow_dispatch:
+    inputs:
+      env_kind:
+        description: 'Environment kind'
+        required: true
+      run_number:
+        description: 'GitHub run number'
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: publish-results
+      cancel-in-progress: false
+
+    steps:
+      - name: Download test results
+        uses: actions/download-artifact@v3
+        with:
+          name: results-${{ github.event.inputs.env_kind }}-${{ github.event.inputs.run_number }}
+          path: ${{ github.event.inputs.env_kind }}
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 21
+
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: ${{ github.event.inputs.env_kind }}
+          subfolder: ${{ github.event.inputs.env_kind }}
+
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
