@@ -1,4 +1,4 @@
-name: Run tests and trigger publish
+name: Run tests xyz
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
         run: ./gradlew clean test
 
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: results-${{ env.ENV_KIND }}-${{ github.run_number }}

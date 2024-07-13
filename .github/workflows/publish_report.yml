@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Download test results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: results-${{ github.event.inputs.env_kind }}-${{ github.event.inputs.run_number }}
           path: ${{ github.event.inputs.env_kind }}
