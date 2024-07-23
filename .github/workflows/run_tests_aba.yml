@@ -45,6 +45,7 @@ jobs:
         if: always()
         run: echo "[Report](https://arturmkr.github.io/allure_report/${{ env.ENV_KIND }}/${{ github.run_number }}/)" >> $GITHUB_STEP_SUMMARY
   publish:
+    needs: test
     env:
       ENV_KIND: aba
     runs-on: ubuntu-latest
