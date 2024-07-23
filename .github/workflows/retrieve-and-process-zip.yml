@@ -21,7 +21,7 @@ jobs:
           workflow_search: false
           workflow_conclusion: ""
           event: push
-          name: result.zip
+          name: result
           repo: ${{ github.repository }}
           check_artifacts: false
           search_artifacts: false
