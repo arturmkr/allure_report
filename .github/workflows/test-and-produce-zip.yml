@@ -1,0 +1,34 @@
+# .github/workflows/generate-zip.yml
+name: Generate Zip File
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Generate random number
+        id: generate_number
+        run: |
+          echo "GENERATED_NUMBER=$((RANDOM))" >> $GITHUB_ENV
+
+      - name: Create info.txt with random number
+        run: |
+          echo "Random Number: $GENERATED_NUMBER" > info.txt
+
+      - name: Zip the info.txt file
+        run: |
+          zip result.zip info.txt
+
+      - name: Upload zip file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: result-zip
+          path: result.zip

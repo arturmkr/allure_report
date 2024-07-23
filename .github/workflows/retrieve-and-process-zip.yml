@@ -1,0 +1,26 @@
+# .github/workflows/retrieve-and-print-info.yml
+name: Retrieve and Print Info
+
+on:
+  workflow_run:
+    workflows: ["Generate Zip File"]
+    types:
+      - completed
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: result-zip
+
+      - name: Unzip the file
+        run: |
+          unzip result.zip -d extracted_files
+
+      - name: Print info.txt
+        run: |
+          cat extracted_files/info.txt
