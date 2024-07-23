@@ -57,6 +57,14 @@ jobs:
           distribution: zulu
           java-version: 21
 
+      - name: Load test report history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
       - name: Build test report
         uses: simple-elf/allure-report-action@v1.7
         with:
