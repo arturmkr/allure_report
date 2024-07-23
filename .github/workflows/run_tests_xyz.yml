@@ -31,15 +31,6 @@ jobs:
         with:
           name: results
           path: build/allure-results
-
-#      - name: Trigger publish workflow
-#        if: always()
-#        run: |
-#          curl -X POST \
-#          -H "Accept: application/vnd.github.v3+json" \
-#          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-#          https://api.github.com/repos/${{ github.repository }}/actions/workflows/publish_report.yml/dispatches \
-#          -d '{"ref":"main","inputs":{"env_kind":"${{ env.ENV_KIND }}","run_number":"${{ github.run_number }}"}}'
       - name: Add link to job summary
         if: always()
         run: echo "[Report](https://arturmkr.github.io/allure_report/${{ env.ENV_KIND }}/${{ github.run_number }}/)" >> $GITHUB_STEP_SUMMARY
