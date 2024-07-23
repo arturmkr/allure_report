@@ -2,6 +2,8 @@ package com.example.allure_report;
 
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -18,7 +20,7 @@ public class MyDemoTest {
         int randomNum = 1000 + rand.nextInt(1001);
 
         given()
-                .filters(new AllureRestAssured())
+                .filters(new AllureRestAssured(), new RequestLoggingFilter(), new ResponseLoggingFilter())
                 .when()
                 .get("v2/pet/" + randomNum)
                 .then()
