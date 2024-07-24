@@ -6,12 +6,12 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  ENV_KIND: xyz
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      ENV_KIND: xyz
-
     steps:
       - uses: actions/checkout@v3
 
@@ -37,8 +37,6 @@ jobs:
   publish:
     needs: test
     if: always()
-    env:
-      ENV_KIND: xyz
     runs-on: ubuntu-latest
     concurrency:
       group: publish-results
@@ -59,7 +57,6 @@ jobs:
 
       - name: Load test report history
         uses: actions/checkout@v3
-        if: always()
         continue-on-error: true
         with:
           ref: gh-pages
