@@ -66,14 +66,16 @@ jobs:
         uses: simple-elf/allure-report-action@v1.9
         with:
           gh_pages: gh-pages
-          allure_history: allure-history
+          allure_history: .
           allure_results: ${{ env.ENV_KIND }}
           subfolder: docs/${{ env.ENV_KIND }}
           keep_reports: 100
 
-      - name: Publish test report
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history
+      - name: Commit and push changes
+        run: |
+          cd gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "test report for ${{ env.ENV_NAME }}-${{ github.run_number }}"
+          git push origin gh-pages
