@@ -68,7 +68,7 @@ jobs:
           gh_pages: gh-pages
           allure_history: allure-history
           allure_results: ${{ env.ENV_KIND }}
-          subfolder: ${{ env.ENV_KIND }}
+          subfolder: docs/${{ env.ENV_KIND }}
           keep_reports: 100
 
       - name: Publish test report

@@ -68,22 +68,8 @@ jobs:
           gh_pages: gh-pages
           allure_history: allure-history
           allure_results: ${{ env.ENV_KIND }}
-          subfolder: ${{ env.ENV_KIND }}
+          subfolder: docs/${{ env.ENV_KIND }}
           keep_reports: 100
-
-      - name: debug1
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: debug1
-          path: allure-history
-
-      - name: debug2
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: debug2
-          path: ${{ env.ENV_KIND }}
 
       - name: Publish test report
         uses: peaceiris/actions-gh-pages@v4
