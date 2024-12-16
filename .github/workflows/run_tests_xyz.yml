@@ -63,7 +63,7 @@ jobs:
           path: gh-pages
 
       - name: Build test report
-        uses: simple-elf/allure-report-action@v1.9
+        uses: ./.github/actions/allure-report-action
         with:
           gh_pages: gh-pages
           allure_history: gh-pages
