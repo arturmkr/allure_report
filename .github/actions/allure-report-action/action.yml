@@ -58,5 +58,50 @@ inputs:
     required: true
     default: ${{ github.server_url }}
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'composite'
+  steps:
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '8'
+
+    - name: Cache Allure CLI
+      uses: actions/cache@v3
+      with:
+        path: allure-cli
+        key: allure-2.32.0
+
+    - name: Download Allure if not cached
+      shell: bash
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        curl -LO https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.32.0/allure-commandline-2.32.0.zip
+        unzip allure-commandline-2.32.0.zip
+        mv allure-commandline-2.32.0 allure-cli
+        rm allure-commandline-2.32.0.zip
+        chmod -R +x allure-cli/bin
+
+    - name: Add Allure to PATH
+      shell: bash
+      run: echo "${{ github.workspace }}/allure-cli/bin" >> $GITHUB_PATH
+
+    - name: Run entrypoint script
+      run: bash "${{ github.action_path }}/entrypoint.sh"
+      shell: bash
+      working-directory: ${{ github.workspace }}
+      env:
+        INPUT_GH_PAGES: ${{ inputs.gh_pages }}
+        INPUT_ALLURE_HISTORY: ${{ inputs.allure_history }}
+        INPUT_GITHUB_REPO: ${{ inputs.github_repo }}
+        INPUT_GITHUB_REPO_OWNER: ${{ inputs.github_repo_owner }}
+        INPUT_SUBFOLDER: ${{ inputs.subfolder }}
+        INPUT_REPORT_URL: ${{ inputs.report_url }}
+        INPUT_KEEP_REPORTS: ${{ inputs.keep_reports }}
+        INPUT_GITHUB_RUN_NUM: ${{ inputs.github_run_num }}
+        INPUT_GITHUB_RUN_ID: ${{ inputs.github_run_id }}
+        INPUT_GITHUB_SERVER_URL: ${{ inputs.github_server_url }}
+        INPUT_GITHUB_TESTS_REPO: ${{ inputs.github_tests_repo }}
+        INPUT_ALLURE_RESULTS: ${{ inputs.allure_results }}
+        INPUT_ALLURE_REPORT: ${{ inputs.allure_report }}
+        GITHUB_WORKSPACE: ${{ github.workspace }}
